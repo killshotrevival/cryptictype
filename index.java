@@ -1,7 +1,5 @@
 import java.util.*;
 
-
-
 class enc{
     char alpha;
     char []code = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
@@ -32,10 +30,11 @@ class decdata{
     }
 
     public void add_data(char a, char[] c, int i){
-      // data[i] = new enc();
+
         data[i].add(a, c);
 
     }
+
     public void printdata(int input){
         System.out.println("Dataset:-");
         for(int i=0; i<input; i++){
@@ -44,9 +43,19 @@ class decdata{
             System.out.println(data[i].getcode());
         }
     }
-    public char get(int i){
-        return data[i].getalpha();
+
+    public int check_char(char c, int s){
+        int flag=0;
+        for(int i=0; i<s; i++){
+            if (data[i].getalpha()==c)
+            {
+                flag=1;
+                break;
+            }
+        }
+        return flag;
     }
+
     public int check(char[] str, int input){
         int flag=1;
         for(int i=0; i<input; i++){
@@ -58,6 +67,20 @@ class decdata{
         }
         return flag;
     }
+
+    public char[] retcode(char c){
+        char []a = new char[5];
+        for(int i=0; i<size; i++){
+            if (data[i].getalpha()==c){
+                a = new char[data[i].getcode().length];
+                a=data[i].getcode();
+                break;
+            }
+        }
+        return a;
+    }
+
+    //decode
     public void match(char[] str){
         for(int i=0; i<this.size; i++){
             //data[i] = new enc();
@@ -160,9 +183,11 @@ public class index{
         char []inputchar = str_to_char(inputString);
         
         char []randomstr;
-        int check;
+        int check, check2;
         decdata dataset = new decdata(inputchar.length);
         for(int i=0; i<inputchar.length;i++){
+            check2 = dataset.check_char(inputchar[i], i);
+            if(check2==0){
             randomstr = randomstring(mainstring);
             check = dataset.check(randomstr, i);
             if(check==1){
@@ -172,6 +197,11 @@ public class index{
             else{
                 i=i-1;
             }
+        }
+
+        else{
+            finalstr.append(dataset.retcode(inputchar[i]));
+        }
         }
 
         System.out.println(finalstr);
